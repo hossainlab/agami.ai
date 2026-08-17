@@ -1,2 +1,20 @@
-# agami.ai
-agami.ai delivers foundational Artificial Intelligence &amp; Machine Learning literacy, ethics, and hands-on toolkits to school and college students aged 11–18 and educators across all 8 divisions—100% free of cost.
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
+
+# Run and deploy your AI Studio app
+
+This contains everything you need to run your app locally.
+
+View your app in AI Studio: https://ai.studio/apps/75484f41-60f4-4790-bc96-b8b17825b446
+
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

@@ -1,0 +1,6 @@
+{
+  "name": "agami.ai",
+  "description": "National AI education initiative empowering school and college students across Bangladesh with foundational AI & ML skills, ethics, and mentorship, adapting resources from Experience AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
