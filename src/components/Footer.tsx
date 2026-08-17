@@ -59,12 +59,6 @@ export const Footer: React.FC<FooterProps> = ({
                 Empowering school and college students and educators across Bangladesh with foundational Artificial Intelligence and Machine Learning literacy, ethical reasoning, and hands-on skills.
               </p>
             </div>
-
-            <div className="pt-1 text-xs text-slate-500 leading-relaxed">
-              Adapted from educational resources developed by the{' '}
-              <span className="text-slate-300 font-medium">Raspberry Pi Foundation</span> and{' '}
-              <span className="text-slate-300 font-medium">Google DeepMind</span>.
-            </div>
           </div>
 
           {/* Navigation (3 cols) */}

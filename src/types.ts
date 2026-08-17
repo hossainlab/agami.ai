@@ -63,6 +63,8 @@ export interface MentorProfile {
   role: string;
   affiliation: string;
   specialization: string;
+  tags?: string[];
+  bio?: string;
   imageUrl?: string;
   imagePlaceholderColor: string;
 }

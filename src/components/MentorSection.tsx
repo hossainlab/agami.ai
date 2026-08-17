@@ -23,54 +23,82 @@ interface MentorSectionProps {
 
 const MentorCard: React.FC<{ mentor: MentorProfile }> = ({ mentor }) => {
   const [imgError, setImgError] = useState(false);
+  const isMentor = mentor.role === 'Mentor';
 
   return (
     <div 
-      className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-indigo-200 transition-all flex flex-col justify-between group"
+      className="bg-white rounded-2xl border border-slate-200/85 shadow-xs hover:shadow-lg hover:shadow-slate-900/5 hover:border-slate-300 transition-all duration-300 flex flex-col justify-between overflow-hidden group p-3 sm:p-3.5"
     >
-      <div className="space-y-3.5">
-        {/* Mentor Image Container with Placeholder Photo and Fallback */}
-        <div className="relative w-full h-52 sm:h-48 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/60 shadow-xs">
-          {!imgError && mentor.imageUrl ? (
-            <img 
-              src={mentor.imageUrl} 
-              alt={mentor.name}
-              referrerPolicy="no-referrer"
-              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-tr ${mentor.imagePlaceholderColor || 'from-indigo-600 to-violet-700'} text-white font-extrabold text-2xl flex items-center justify-center`}>
-              {mentor.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
-            </div>
-          )}
-          
-          <div className="absolute top-2.5 right-2.5">
-            <span className="px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold tracking-wide shadow-xs">
-              Mentor
-            </span>
+      {/* 1. Photo Viewport with Inset Gallery Frame */}
+      <div className="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden bg-slate-100 ring-1 ring-slate-900/5 shadow-inner">
+        {!imgError && mentor.imageUrl ? (
+          <img 
+            src={mentor.imageUrl} 
+            alt={mentor.name}
+            className="w-full h-full object-cover object-top group-hover:scale-103 transition-transform duration-500 ease-out"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className={`w-full h-full bg-gradient-to-tr ${mentor.imagePlaceholderColor || 'from-indigo-600 to-violet-700'} text-white font-extrabold text-2xl flex items-center justify-center`}>
+            {mentor.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
           </div>
+        )}
+
+        {/* Floating Role Badge */}
+        <div className="absolute top-2.5 right-2.5">
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide backdrop-blur-md shadow-xs border ${
+            isMentor 
+              ? 'bg-emerald-950/85 text-emerald-300 border-emerald-500/30' 
+              : 'bg-slate-950/85 text-indigo-300 border-indigo-500/30'
+          }`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${isMentor ? 'bg-emerald-400' : 'bg-indigo-400'}`} />
+            {mentor.role}
+          </span>
         </div>
 
-        {/* Mentor Details */}
+        {/* Bottom Affiliation Pill */}
+        <div className="absolute bottom-2.5 left-2.5">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/95 backdrop-blur-md text-slate-800 text-[10px] font-bold shadow-sm border border-slate-200/80">
+            <GraduationCap className="w-3 h-3 text-indigo-600" />
+            <span>{mentor.affiliation.includes('MIT') ? 'MIT' : 'agami.ai'}</span>
+          </span>
+        </div>
+      </div>
+
+      {/* 2. Content Details */}
+      <div className="pt-3 px-1 space-y-1.5 flex-1 flex flex-col justify-between">
         <div>
-          <h4 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-            {mentor.name}
-          </h4>
-          <p className="text-xs text-indigo-600 font-semibold mt-0.5">
-            {mentor.role}
-          </p>
-          <p className="text-xs text-slate-500 font-medium mt-1">
+          <div className="flex items-center justify-between gap-1.5">
+            <h4 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors tracking-tight">
+              {mentor.name}
+            </h4>
+            <div className="w-4 h-4 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0" title="Verified Profile">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+            </div>
+          </div>
+
+          <p className="text-xs font-semibold text-indigo-600">
             {mentor.affiliation}
           </p>
-        </div>
 
-        <div className="pt-3 border-t border-slate-100">
-          <p className="text-[11px] text-slate-600 font-normal leading-relaxed">
-            <span className="font-semibold text-slate-700">Focus: </span>
+          <p className="text-xs text-slate-600 font-normal leading-relaxed mt-1 line-clamp-2">
             {mentor.specialization}
           </p>
         </div>
+
+        {/* Micro Domain Tags */}
+        {mentor.tags && mentor.tags.length > 0 && (
+          <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1">
+            {mentor.tags.slice(0, 2).map((tag, idx) => (
+              <span 
+                key={idx}
+                className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-medium border border-slate-200/60"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -98,15 +126,15 @@ export const MentorSection: React.FC<MentorSectionProps> = ({
     {
       icon: Award,
       title: 'Showcase Judge & Reviewer',
-      description: 'Evaluate innovative student capstone projects, provide constructive feedback, and select standout youth innovators at regional showcases.',
-      badge: 'Evaluation Track'
+      description: 'Evaluate creative AI projects during our regional hackathons, science fairs, and national young innovator showcases.',
+      badge: 'Showcase Track'
     }
   ];
 
-  const benefits = [
+  const volunteerBenefits = [
     {
       icon: Clock,
-      title: 'Flexible Commitment',
+      title: 'Flexible & Hybrid',
       desc: 'Contribute just 2–4 hours per month via remote mentoring sessions or weekend regional workshops.'
     },
     {
@@ -116,62 +144,73 @@ export const MentorSection: React.FC<MentorSectionProps> = ({
     },
     {
       icon: Globe2,
-      title: 'Nationwide Grassroots Impact',
-      desc: 'Directly empower students aged 11–18 across all 8 divisions and underrepresented districts in Bangladesh.'
+      title: 'National Social Impact',
+      desc: 'Directly inspire students in underrepresented districts and public schools with foundational future skills.'
     },
     {
       icon: Users,
-      title: 'Professional Community',
-      desc: 'Connect with a vibrant network of AI researchers, industry engineers, and university faculty members.'
+      title: 'Elite Network',
+      desc: 'Connect with a passionate community of AI researchers, industry engineers, and educational innovators.'
     }
   ];
 
   return (
     <section id="mentors" className="py-16 sm:py-24 bg-slate-50/70 border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold mb-3">
-            <Users className="w-3.5 h-3.5" />
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider">
+            <Users className="w-3.5 h-3.5 text-indigo-600" />
             <span>Community & Mentorship Network</span>
           </div>
-
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Be a Mentor at agami.ai
           </h2>
-
-          <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed">
+          
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
             Empower Bangladesh's next generation of AI innovators. Volunteer your expertise to mentor high school and college students, support educators, and shape a thriving, ethical AI ecosystem.
           </p>
         </div>
 
         {/* 3 Mentor Roles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {mentorTracks.map((track, idx) => {
             const Icon = track.icon;
             return (
               <div 
                 key={idx}
-                className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-indigo-200 transition-all flex flex-col"
+                className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-indigo-200 transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 transition-transform">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className="text-[11px] font-bold text-indigo-600 bg-indigo-50/80 px-2.5 py-1 rounded-full border border-indigo-100/60">
+                    <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold">
                       {track.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-slate-900">
-                    {track.title}
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                      {track.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed font-normal">
+                      {track.description}
+                    </p>
+                  </div>
+                </div>
 
-                  <p className="text-slate-600 text-sm leading-relaxed font-normal">
-                    {track.description}
-                  </p>
+                <div className="pt-5 mt-5 border-t border-slate-100">
+                  <button
+                    onClick={() => onOpenRegistration('Mentor', track.title)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 cursor-pointer group-hover:translate-x-1 transition-transform"
+                  >
+                    <span>Express Interest</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             );
@@ -179,22 +218,22 @@ export const MentorSection: React.FC<MentorSectionProps> = ({
         </div>
 
         {/* Why Mentor With Us (4 Pillars) */}
-        <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 p-6 sm:p-10 mb-16 shadow-xs">
-          <div className="max-w-2xl mb-8">
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-2">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xs space-y-8">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               Why Volunteer as an agami.ai Mentor?
             </h3>
-            <p className="text-sm text-slate-600">
-              We make volunteering impactful, flexible, and rewarding for industry practitioners and academic researchers alike.
+            <p className="text-xs sm:text-sm text-slate-600 font-normal">
+              Join a structured volunteering framework designed to respect your busy schedule while maximizing student outcomes.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map((benefit, i) => {
+            {volunteerBenefits.map((benefit, idx) => {
               const Icon = benefit.icon;
               return (
-                <div key={i} className="space-y-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 text-indigo-600 flex items-center justify-center">
+                <div key={idx} className="space-y-2.5 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                  <div className="w-9 h-9 rounded-lg bg-indigo-100/70 text-indigo-600 flex items-center justify-center">
                     <Icon className="w-5 h-5" />
                   </div>
                   <h4 className="text-sm font-bold text-slate-900">
@@ -209,7 +248,7 @@ export const MentorSection: React.FC<MentorSectionProps> = ({
           </div>
         </div>
 
-        {/* Featured Mentors & Advisors */}
+        {/* Featured Leadership & Mentors */}
         <div className="mb-16">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
@@ -218,7 +257,7 @@ export const MentorSection: React.FC<MentorSectionProps> = ({
                 <span>Our Mentor Community</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                Meet Featured Mentors & Advisors
+                Featured Leadership &amp; Mentors
               </h3>
             </div>
             <button
@@ -230,10 +269,30 @@ export const MentorSection: React.FC<MentorSectionProps> = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
             {MENTORS.map((mentor) => (
               <MentorCard key={mentor.id} mentor={mentor} />
             ))}
+
+            {/* Join as Mentor Card */}
+            <div 
+              onClick={() => onOpenRegistration('Mentor', 'agami.ai Mentor Application')}
+              className="rounded-2xl border-2 border-dashed border-slate-200 hover:border-indigo-300 bg-slate-50/60 hover:bg-indigo-50/30 p-5 flex flex-col justify-center items-center text-center transition-all duration-300 cursor-pointer group min-h-[280px]"
+            >
+              <div className="w-11 h-11 rounded-xl bg-white shadow-xs border border-slate-200/80 flex items-center justify-center text-indigo-600 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 mb-3">
+                <Users className="w-5 h-5" />
+              </div>
+              <h4 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                Join Our Mentor Network
+              </h4>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed max-w-[200px]">
+                Share your expertise in AI, biology, or computing with young Bangladeshi learners.
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-indigo-600 group-hover:text-indigo-700">
+                <span>Apply as Mentor</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </div>
           </div>
         </div>
 

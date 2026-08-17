@@ -51,9 +51,10 @@ export const MENTORS: MentorProfile[] = [
   {
     id: 'mentor-1',
     name: 'Md. Jubayer Hossain',
-    role: 'Lead Organizer & Educator',
+    role: 'Lead Organizer',
     affiliation: 'Founder & Lead, agami.ai',
     specialization: 'Applied Deep Learning, Curriculum Design & Youth Mentorship',
+    tags: ['Deep Learning', 'Curriculum Design', 'Youth Mentorship'],
     imageUrl: '/mentors/jubayer.jpg',
     imagePlaceholderColor: 'from-blue-600 to-indigo-700'
   },
@@ -61,8 +62,9 @@ export const MENTORS: MentorProfile[] = [
     id: 'mentor-2',
     name: 'Fayez Ahmad',
     role: 'Mentor',
-    affiliation: 'MIT',
-    specialization: 'Computational Biology',
+    affiliation: 'MIT (Massachusetts Institute of Technology)',
+    specialization: 'Computational Biology & Applied AI in Healthcare',
+    tags: ['Computational Biology', 'Machine Learning', 'Bioinformatics'],
     imageUrl: '/mentors/Fayez_Ahmad.png',
     imagePlaceholderColor: 'from-emerald-600 to-teal-700'
   }
