@@ -54,7 +54,7 @@ export const MENTORS: MentorProfile[] = [
     role: 'Lead Organizer & Educator',
     affiliation: 'Founder & Lead, agami.ai',
     specialization: 'Applied Deep Learning, Curriculum Design & Youth Mentorship',
-    imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=600&q=80',
+    imageUrl: '/mentors/jubayer.jpg',
     imagePlaceholderColor: 'from-blue-600 to-indigo-700'
   },
   {
@@ -63,7 +63,7 @@ export const MENTORS: MentorProfile[] = [
     role: 'Mentor',
     affiliation: 'MIT',
     specialization: 'Computational Biology',
-    imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=600&q=80',
+    imageUrl: '/mentors/Fayez_Ahmad.png',
     imagePlaceholderColor: 'from-emerald-600 to-teal-700'
   }
 ];
