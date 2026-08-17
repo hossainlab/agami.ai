@@ -18,6 +18,8 @@ import { MENTORS } from '../data/showcaseData';
 import { LinkConfig, MentorProfile } from '../types';
 import { DEFAULT_CONFIG } from '../utils/config';
 
+import Image from 'next/image';
+
 interface MentorSectionProps {
   onOpenRegistration: (track?: string, eventTitle?: string) => void;
   config?: LinkConfig;
@@ -34,9 +36,14 @@ const MentorCard: React.FC<{ mentor: MentorProfile }> = ({ mentor }) => {
       {/* 1. Photo Viewport with Inset Gallery Frame */}
       <div className="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden bg-slate-100 ring-1 ring-slate-900/5 shadow-inner">
         {!imgError && mentor.imageUrl ? (
-          <img 
+          <Image 
             src={mentor.imageUrl} 
             alt={mentor.name}
+            width={380}
+            height={260}
+            quality={85}
+            loading="lazy"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="w-full h-full object-cover object-top group-hover:scale-103 transition-transform duration-500 ease-out"
             onError={() => setImgError(true)}
           />
@@ -62,7 +69,13 @@ const MentorCard: React.FC<{ mentor: MentorProfile }> = ({ mentor }) => {
         <div className="absolute bottom-2.5 left-2.5">
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/95 backdrop-blur-md text-slate-800 text-[10px] font-bold shadow-sm border border-slate-200/80">
             <GraduationCap className="w-3 h-3 text-indigo-600" />
-            <span>{mentor.affiliation.includes('MIT') ? 'MIT' : 'agami.ai'}</span>
+            <span>
+              {mentor.affiliation.includes('MIT')
+                ? 'MIT'
+                : mentor.affiliation.includes('Dhaka') || mentor.affiliation.includes('DU')
+                ? 'DU (CSE)'
+                : 'agami.ai'}
+            </span>
           </span>
         </div>
       </div>

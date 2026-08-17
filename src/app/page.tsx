@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { CurriculumCredits } from '@/components/CurriculumCredits';
@@ -9,10 +10,19 @@ import { CurriculumExplorer } from '@/components/CurriculumExplorer';
 import { MentorSection } from '@/components/MentorSection';
 import { FaqSection } from '@/components/FaqSection';
 import { Footer } from '@/components/Footer';
-import { ConfigModal } from '@/components/ConfigModal';
-import { RegistrationModal } from '@/components/RegistrationModal';
 import { LinkConfig } from '@/types';
 import { DEFAULT_CONFIG, getLinkConfig, saveLinkConfig } from '@/utils/config';
+
+// Lazy load modals on demand to keep initial bundle ultra-lightweight
+const ConfigModal = dynamic(
+  () => import('@/components/ConfigModal').then((mod) => mod.ConfigModal),
+  { ssr: false }
+);
+
+const RegistrationModal = dynamic(
+  () => import('@/components/RegistrationModal').then((mod) => mod.RegistrationModal),
+  { ssr: false }
+);
 
 export default function HomePage() {
   const [linkConfig, setLinkConfig] = useState<LinkConfig>(DEFAULT_CONFIG);
@@ -85,22 +95,26 @@ export default function HomePage() {
         config={linkConfig}
       />
 
-      {/* Custom Link Configuration Modal */}
-      <ConfigModal
-        isOpen={isConfigModalOpen}
-        onClose={() => setIsConfigModalOpen(false)}
-        config={linkConfig}
-        onSave={handleSaveConfig}
-      />
+      {/* Custom Link Configuration Modal (Lazy loaded) */}
+      {isConfigModalOpen && (
+        <ConfigModal
+          isOpen={isConfigModalOpen}
+          onClose={() => setIsConfigModalOpen(false)}
+          config={linkConfig}
+          onSave={handleSaveConfig}
+        />
+      )}
 
-      {/* Fast Registration Modal */}
-      <RegistrationModal
-        isOpen={isRegistrationModalOpen}
-        onClose={() => setIsRegistrationModalOpen(false)}
-        config={linkConfig}
-        initialTrack={registrationTrack}
-        eventTitle={registrationEventTitle}
-      />
+      {/* Fast Registration Modal (Lazy loaded) */}
+      {isRegistrationModalOpen && (
+        <RegistrationModal
+          isOpen={isRegistrationModalOpen}
+          onClose={() => setIsRegistrationModalOpen(false)}
+          config={linkConfig}
+          initialTrack={registrationTrack}
+          eventTitle={registrationEventTitle}
+        />
+      )}
     </div>
   );
 }

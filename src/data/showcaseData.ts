@@ -60,6 +60,16 @@ export const MENTORS: MentorProfile[] = [
   },
   {
     id: 'mentor-2',
+    name: 'Tasmim Rahman Adib',
+    role: 'Mentor',
+    affiliation: 'University of Dhaka (CSE)',
+    specialization: 'Computer Science, Algorithms & Applied Machine Learning',
+    tags: ['Computer Science', 'Machine Learning', 'Algorithms'],
+    imageUrl: '/mentors/adib.jpg',
+    imagePlaceholderColor: 'from-violet-600 to-purple-700'
+  },
+  {
+    id: 'mentor-3',
     name: 'Fayez Ahmad',
     role: 'Mentor',
     affiliation: 'MIT (Massachusetts Institute of Technology)',
