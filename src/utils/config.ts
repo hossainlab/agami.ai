@@ -15,6 +15,9 @@ export const DEFAULT_CONFIG: LinkConfig = {
 const STORAGE_KEY = 'experience_ai_bd_links_config';
 
 export function getLinkConfig(): LinkConfig {
+  if (typeof window === 'undefined') {
+    return DEFAULT_CONFIG;
+  }
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -30,6 +33,9 @@ export function getLinkConfig(): LinkConfig {
 }
 
 export function saveLinkConfig(config: LinkConfig): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
   } catch (e) {
